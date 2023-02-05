@@ -14,7 +14,6 @@ public class Stray {
     private String dstraydate;
     private String cstrayloc;
     private String centemplcode;
-    private String dentrydate;
     private String cpackdesc;
     private String cvehicleno;
     private String croute;

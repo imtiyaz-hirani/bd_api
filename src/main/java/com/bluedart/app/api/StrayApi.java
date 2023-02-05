@@ -1,10 +1,15 @@
 package com.bluedart.app.api;
 
 import com.bluedart.app.model.Stray;
+import com.bluedart.app.model.StrayGrid;
 import com.bluedart.app.model.StrayImage;
+import com.bluedart.app.model.StrayQuery;
 import com.bluedart.app.service.StrayService;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,6 +19,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.List;
 
 @RestController
 public class StrayApi {
@@ -22,12 +28,20 @@ public class StrayApi {
     private StrayService service;
 
     @PostMapping("/stray")
-    public String addStray(@RequestBody Stray stray){
-        return service.addStray(stray);
+    public ResponseEntity<StrayNoResponse> addStray(@RequestBody Stray stray){
+        StrayNoResponse response = new StrayNoResponse();
+        response.setStrayNo(service.addStray(stray));
+        return new ResponseEntity<StrayNoResponse>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/getstray")
+    public ResponseEntity<List<StrayGrid>> getStrayGrid(@RequestBody StrayQuery strayQuery){
+        return new ResponseEntity<List<StrayGrid>>(service.getStrayGrid(strayQuery), HttpStatus.OK);
     }
 
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public String uploadImage(@RequestPart("file") MultipartFile file ,@RequestParam("mcstrayno") String uuid){
+    public ResponseEntity<StrayImageResponse> uploadImage(@RequestPart("file") MultipartFile file ,@RequestParam("mcstrayno") String uuid){
+        StrayImageResponse strayImageResponse = new StrayImageResponse();
         if(!file.isEmpty()) {
             StrayImage strayImage = new StrayImage();
             strayImage.setMcstrayno(uuid);
@@ -41,13 +55,27 @@ public class StrayApi {
             strayImage.setMcuplodemplcode("IMT");
             strayImage.setMduploaddt(Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant()));
 
-            return service.upload(strayImage);
+
+
+            strayImageResponse.setMesaage(service.upload(strayImage));
+            return new ResponseEntity<StrayImageResponse>(strayImageResponse, HttpStatus.OK);
         }
-        return "Failed";
+        strayImageResponse.setMesaage("Failed");
+        return new ResponseEntity<StrayImageResponse>(strayImageResponse, HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/")
     public String helloApi(){
         return "BlueDart Api";
+    }
+
+    @Data
+    private class StrayNoResponse{
+        private String strayNo;
+    }
+
+    @Data
+    private class StrayImageResponse{
+        private String mesaage;
     }
 }
