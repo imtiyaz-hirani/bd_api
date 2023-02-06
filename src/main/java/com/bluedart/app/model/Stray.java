@@ -10,39 +10,7 @@ import javax.persistence.StoredProcedureParameter;
 
 import lombok.Data;
 
-@NamedStoredProcedureQuery(
-	      name = Stray.NamedQuery_stray_csv_new,
-	      procedureName = "stray_csv_new",
-	      resultClasses = Stray.class,
-	      parameters = {
-	              @StoredProcedureParameter(type = ResultSet.class, mode = ParameterMode.REF_CURSOR, 
-	            		  name="p_cursor"),
-	              @StoredProcedureParameter(type = String.class, mode = ParameterMode.IN, 
-        		  name="mregion"),
-	              @StoredProcedureParameter(type = String.class, mode = ParameterMode.IN, 
-        		  name="mcfromdate"),
-	              @StoredProcedureParameter(type = String.class, mode = ParameterMode.IN, 
-        		  name="mctodate"),
-	              @StoredProcedureParameter(type = String.class, mode = ParameterMode.IN, 
-        		  name="mcstrayloc"),
-	              @StoredProcedureParameter(type = String.class, mode = ParameterMode.IN, 
-        		  name="mcpackdesc"),
-	              @StoredProcedureParameter(type = String.class, mode = ParameterMode.IN, 
-        		  name="mcvehicleno"),
-	              @StoredProcedureParameter(type = String.class, mode = ParameterMode.IN, 
-        		  name="mcvehicleorigin"),
-	              @StoredProcedureParameter(type = String.class, mode = ParameterMode.IN, 
-        		  name="mcroute"),
-	              @StoredProcedureParameter(type = String.class, mode = ParameterMode.IN, 
-        		  name="mcawbno"),
-	              @StoredProcedureParameter(type = String.class, mode = ParameterMode.IN, 
-        		  name="mcremarks"),
-	              @StoredProcedureParameter(type = String.class, mode = ParameterMode.IN, 
-        		  name="mcstatus"),
-	              @StoredProcedureParameter(type = String.class, mode = ParameterMode.IN, 
-        		  name="mcommodity")
-	      }
-	)
+
 
 @Entity
 @Data

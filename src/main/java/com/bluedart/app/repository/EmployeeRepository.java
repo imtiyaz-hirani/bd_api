@@ -14,5 +14,5 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long>{
 	
 	@Transactional
 	@Procedure(name = Employee.NamedQuery_getEmployee)
-	  List<Employee> get_employee(@Param("branch") String branch);
+	  List<Employee> get_employee(String branch);
 }
